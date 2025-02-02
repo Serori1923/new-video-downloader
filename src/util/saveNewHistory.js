@@ -3,11 +3,11 @@ import { appDataDir } from "@tauri-apps/api/path";
 import { loadHistory } from "./loadHistory";
 import { checkAndInitJson } from "./checkAndInitJson";
 
-const JSON_FILE = "history.json";
-const appDataDirPath = await appDataDir();
-const jsonFilePath = `${appDataDirPath}/${JSON_FILE}`;
-
 export const saveNewHistory = async (name, url) => {
+    const JSON_FILE = "history.json";
+    const appDataDirPath = await appDataDir();
+    const jsonFilePath = `${appDataDirPath}/${JSON_FILE}`;
+
     const newVideo = {
         downloadDate: new Date().toISOString().split("T")[0],
         fileName: name,

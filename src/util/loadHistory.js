@@ -2,11 +2,11 @@ import { readTextFile } from "@tauri-apps/plugin-fs";
 import { appDataDir } from "@tauri-apps/api/path";
 import { checkAndInitJson } from "./checkAndInitJson";
 
-const JSON_FILE = "history.json";
-const appDataDirPath = await appDataDir();
-const jsonFilePath = `${appDataDirPath}/${JSON_FILE}`;
-
 export const loadHistory = async () => {
+    const JSON_FILE = "history.json";
+    const appDataDirPath = await appDataDir();
+    const jsonFilePath = `${appDataDirPath}/${JSON_FILE}`;
+
     checkAndInitJson();
 
     try {

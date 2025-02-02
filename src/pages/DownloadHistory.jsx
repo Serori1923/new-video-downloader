@@ -10,18 +10,17 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Fullscreen } from "@mui/icons-material";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 
-
-const JSON_FILE = "history.json";
-const appDataDirPath = await appDataDir();
-const jsonFilePath = `${appDataDirPath}/${JSON_FILE}`;
-
-export default function DownloadHistory (){
+export const DownloadHistoryPage = async () => {
   const [history, setHistory] = useState([]);
   const { lang, changeLanguage } = useLanguage();
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [message, setMessage] = useState("");
   const [openDialog, setOpenDialog] = useState(false);  // 控制確認對話框顯示
   const [isDeleting, setIsDeleting] = useState(false);  // 控制刪除操作狀態
+
+  const JSON_FILE = "history.json";
+  const appDataDirPath = await appDataDir();
+  const jsonFilePath = `${appDataDirPath}/${JSON_FILE}`;
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
