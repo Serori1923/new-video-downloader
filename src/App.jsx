@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import DownloadHistoryPage from "./pages/DownloadHistory";
 import PreferencesPage from "./pages/Preferences";
-import { DownloadHistoryPage } from "./pages/DownloadHistory";
 import { open } from '@tauri-apps/plugin-shell';
 import { TextField, Button, Typography, Tabs, Tab, IconButton } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
