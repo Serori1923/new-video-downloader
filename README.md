@@ -19,8 +19,6 @@ Built on the open-source **Cobalt** project, this tool provides a secure and rel
 2. Users interact with the API through a **React-based graphical interface**.
 3. The application processes user requests, downloads the desired video, and logs the download history locally for future reference.
 
-![Flowchart](src/Flowchart.jpg)
-
 ## How to build
 
 ### Required dependencies
