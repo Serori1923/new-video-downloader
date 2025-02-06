@@ -9,5 +9,6 @@ export const errorMap = {
     "error.api.content.post.private": {"zh-TW": "影片為私人影片", "en-US": "The content is private", "ja-JP": "この動画は非公開です", "ko-KR": "비디오가 비공개입니다", "tr-TR": "Video özel"},
     "error.api.fetch.empty": {"zh-TW": "無法取得影片", "en-US": "Unable to retrieve video", "ja-JP": "動画が取得できません", "ko-KR": "비디오를 검색할 수 없음", "tr-TR": "Video alınamıyor"},
     "error.api.fetch.critical": {"zh-TW": "無法取得影片", "en-US": "Unable to retrieve video", "ja-JP": "動画が取得できません", "ko-KR": "비디오를 검색할 수 없음", "tr-TR": "Video alınamıyor"},
+    "error.api.content.video.live": {"zh-TW": "無法下載直播影片", "en-US": "Unable to download live video", "ja-JP": "ライブ動画をダウンロードできません", "ko-KR": "라이브 비디오를 다운로드할 수 없습니다", "tr-TR": "Canlı video indirilemiyor"},
     "unknownError": {"zh-TW": "未知的錯誤", "en-US": "Unknown error", "ja-JP": "未知のエラー", "ko-KR": "알 수 없는 오류", "tr-TR": "Bilinmeyen hata"},
 };
