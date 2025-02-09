@@ -15,16 +15,16 @@ export default function DownloadHistory (){
   const { lang, changeLanguage } = useLanguage();
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [message, setMessage] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);  // 控制確認對話框顯示
-  const [isDeleting, setIsDeleting] = useState(false);  // 控制刪除操作狀態
-  const [jsonFilePath, setJsonFilePath] = useState(""); // 儲存檔案路徑
+  const [openDialog, setOpenDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [jsonFilePath, setJsonFilePath] = useState("");
   const JSON_FILE = "history.json";
 
   useEffect(() => {
     const fetchData = async () => {
-      const appDataDirPath = await appDataDir(); // 假設這是返回檔案路徑的異步函式
+      const appDataDirPath = await appDataDir();
       const jsonFilePath = `${appDataDirPath}/${JSON_FILE}`;
-      setJsonFilePath(jsonFilePath); // 將路徑儲存到 state
+      setJsonFilePath(jsonFilePath);
     };
     fetchData();
   }, []);
@@ -59,15 +59,15 @@ export default function DownloadHistory (){
   };
 
   useEffect(() => {
-    fetchData(); // 執行異步資料載入
+    fetchData();
   }, []); 
 
   return (
     <div className="w-full h-full flex flex-col items-center bg-green-100">
-        <Typography variant="h5" sx={{ mt: 3, color: "#7E9F98" }}>
-            {localizationDownloadHistory.downloadHistory[lang]}
-        </Typography>
-        <TableContainer component={Paper} sx={{mt: 4, mb: 8, backgroundColor: "#FDE4DE" }}>
+      <Typography variant="h5" sx={{ mt: 3, color: "#7E9F98" }}>
+          {localizationDownloadHistory.downloadHistory[lang]}
+      </Typography>
+      <TableContainer component={Paper} sx={{mt: 4, mb: 8, backgroundColor: "#FDE4DE" }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <IconButton variant="outlined" onClick={() => setOpenDialog(true)}>
             <DeleteIcon />
@@ -79,24 +79,24 @@ export default function DownloadHistory (){
         <Table stickyHeader style={{ width: Fullscreen }} aria-label="sticky table" >
           <TableHead>
             <TableRow>
-              <TableCell style={{ width: '10%', backgroundColor: "#D9D9D9" }}>{localizationDownloadHistory.list.number[lang]}</TableCell>
-              <TableCell style={{ width: '15%', backgroundColor: "#D9D9D9" }}>{localizationDownloadHistory.list.downloadDate[lang]}</TableCell>
-              <TableCell id="name" style={{ width: '40%', backgroundColor: "#D9D9D9" }}>{localizationDownloadHistory.list.fileName[lang]}</TableCell>
-              <TableCell id="link" style={{ width: '30%', backgroundColor: "#D9D9D9" }}>{localizationDownloadHistory.list.originalURL[lang]}</TableCell>
+              <TableCell style={{ width: '5%', backgroundColor: "#D9D9D9", whiteSpace: 'nowrap' }}>{localizationDownloadHistory.list.number[lang]}</TableCell>
+              <TableCell style={{ width: '10%', backgroundColor: "#D9D9D9", whiteSpace: 'nowrap' }}>{localizationDownloadHistory.list.downloadDate[lang]}</TableCell>
+              <TableCell style={{ width: '45%', backgroundColor: "#D9D9D9", whiteSpace: 'nowrap' }}>{localizationDownloadHistory.list.fileName[lang]}</TableCell>
+              <TableCell style={{ width: '40%', backgroundColor: "#D9D9D9", whiteSpace: 'nowrap' }}>{localizationDownloadHistory.list.originalURL[lang]}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {history.map((item, index) => (
               <TableRow key={index} sx={{
                 "&:hover": {
-                  backgroundColor: "#e0e0e0", // 滑鼠懸停時的背景色
-                  cursor: "pointer", // 滑鼠變成手型
+                  backgroundColor: "#e0e0e0",
+                  cursor: "pointer",
                 },
               }}>
                 <TableCell>{index+1}</TableCell>
-                <TableCell>{item.downloadDate}</TableCell>
-                <TableCell sx={{ "&:hover": { color: "#23ACE2" } }} onClick={() => handleCopy(item.fileName)}>{item.fileName}</TableCell>
-                <TableCell sx={{ "&:hover": { color: "#23ACE2" } }} onClick={() => handleCopy(item.originalURL)}>{item.originalURL}</TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>{item.downloadDate}</TableCell>
+                <TableCell sx={{ "&:hover": { color: "#23ACE2" }, wordBreak: "break-all" }} onClick={() => handleCopy(item.fileName)}>{item.fileName}</TableCell>
+                <TableCell sx={{ "&:hover": { color: "#23ACE2" }, wordBreak: "break-all" }} onClick={() => handleCopy(item.originalURL)}>{item.originalURL}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -105,7 +105,7 @@ export default function DownloadHistory (){
 
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={1500} // 自動消失時間 (毫秒)
+        autoHideDuration={1500}
         onClose={() => setOpenSnackbar(false)}
       >
         <Alert
@@ -114,7 +114,8 @@ export default function DownloadHistory (){
           sx={{
             width: "calc(100% - 16px)",
             maxWidth: "500px",
-            marginBottom: "16px"
+            marginBottom: "16px",
+            wordBreak: "break-all"
           }}
         >
           {message}
