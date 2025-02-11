@@ -10,5 +10,6 @@ export const errorMap = {
     "error.api.fetch.empty": {"zh-TW": "無法取得影片", "en-US": "Unable to retrieve video", "ja-JP": "動画が取得できません", "ko-KR": "비디오를 검색할 수 없음", "tr-TR": "Video alınamıyor"},
     "error.api.fetch.critical": {"zh-TW": "無法取得影片", "en-US": "Unable to retrieve video", "ja-JP": "動画が取得できません", "ko-KR": "비디오를 검색할 수 없음", "tr-TR": "Video alınamıyor"},
     "error.api.content.video.live": {"zh-TW": "無法下載直播影片", "en-US": "Unable to download live video", "ja-JP": "ライブ動画をダウンロードできません", "ko-KR": "라이브 비디오를 다운로드할 수 없습니다", "tr-TR": "Canlı video indirilemiyor"},
+    "failToConnectToServer": {"zh-TW": "無法連線至伺服器", "en-US": "Failed to connect to server", "ja-JP": "サーバーに接続できません", "ko-KR": "서버에 연결할 수 없습니다", "tr-TR": "Sunucuya bağlanılamadı"},
     "unknownError": {"zh-TW": "未知的錯誤", "en-US": "Unknown error", "ja-JP": "未知のエラー", "ko-KR": "알 수 없는 오류", "tr-TR": "Bilinmeyen hata"},
 };
