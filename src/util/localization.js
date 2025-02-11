@@ -28,7 +28,6 @@ export const localization = {
         fileLink: {"zh-TW": "檔案連結", "en-US": "File Link", "ja-JP": "ファイルリンク", "ko-KR": "파일 링크", "tr-TR": "Dosya Bağlantısı"},
     },
     infoDescription:{
-        failToConnectToServer: {"zh-TW": "無法連線至伺服器", "en-US": "Failed to connect to server", "ja-JP": "サーバーに接続できません", "ko-KR": "서버에 연결할 수 없습니다", "tr-TR": "Sunucuya bağlanılamadı"},
         notDownload: {"zh-TW": "尚未下載", "en-US": "Not yet downloaded", "ja-JP": "ダウンロードされていません", "ko-KR": "다운로드되지 않음", "tr-TR": "İndirilmedi"},
     }
 };
