@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DownloadHistoryPage from "./pages/DownloadHistory";
 import PreferencesPage from "./pages/Preferences";
 import { open } from '@tauri-apps/plugin-shell';
@@ -11,6 +11,7 @@ import { errorMap } from "./util/error map";
 import { saveNewHistory } from "./util/saveNewHistory";
 import { useLanguage } from "./LanguageContext";
 import { useAutoDownload } from "./autoDownload";
+import { useServerUrl } from "./serverUrl";
 import "./index.css";
 
 const theme = createTheme({
@@ -56,6 +57,7 @@ const theme = createTheme({
 export default function App() {
   const { lang, changeLanguage } = useLanguage();
   const { auto, changeAutoDownload } = useAutoDownload();
+  const { serverUrl, changeServerUrl } = useServerUrl();
   const [url, setUrl] = useState("");
   const [downloadStatus, setDownloadStatus] = useState("");
   const [downloadInfo, setDownloadInfo] = useState("");
@@ -69,7 +71,6 @@ export default function App() {
     }
   };
 
-  // 處理表單提交
   const download = async () => {
     setDownloadStatus("downloading");
     const requestData = {
@@ -82,9 +83,11 @@ export default function App() {
       twitterGif: true,
     };
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     try {
-      // 發送 POST 請求
-      const response = await fetch('https://meow.akkkou.com/', {
+      const response = await fetch(serverUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,8 +95,9 @@ export default function App() {
           'Accept': 'application/json',
         },
         body: JSON.stringify(requestData),
+        signal: controller.signal
       });
-
+      
       const data = await response.json();
       if(data.status === "error"){
         console.log(data);
@@ -112,9 +116,13 @@ export default function App() {
       }
     }
     catch (error) {
-      setDownloadInfo(`Request failed: ${error.message}`);
+      setDownloadStatus("requestFail");
+      setDownloadInfo(errorMap["failToConnectToServer"]);
+    } finally {
+      clearTimeout(timeoutId);
     }
   };
+
   return (
       <div className="relative flex flex-col">
         <div className="w-full bg-gray-200">
@@ -168,16 +176,16 @@ export default function App() {
           
           <div className="flex mt-4">
             <Typography sx={{mr: 1, fontSize:"20px", color: "#7E9F98"}}>{localization.downloadStatusTitle[lang]}</Typography>
-            <Typography sx={{fontSize:"20px", color: downloadStatus === "fail" ? "red" : downloadStatus === "success" ? "green" : "#7E9F98"}}>
-              {downloadStatus === "fail" ? localization.status.fail[lang] : downloadStatus === "success" ? localization.status.success[lang] : downloadStatus === "downloading" ? localization.status.downloading[lang] : localization.status.ready[lang]}
+            <Typography sx={{fontSize:"20px", color: downloadStatus === "fail" ? "red" : downloadStatus === "requestFail" ? "red" : downloadStatus === "success" ? "green" : "#7E9F98"}}>
+              {downloadStatus === "fail" ? localization.status.fail[lang] : downloadStatus === "requestFail" ? localization.status.requestFail[lang] : downloadStatus === "success" ? localization.status.success[lang] : downloadStatus === "downloading" ? localization.status.downloading[lang] : localization.status.ready[lang]}
             </Typography>
           </div>
           <Typography sx={{mt: 2, fontSize:"20px", color: "#7E9F98"}}>
-          {downloadStatus === "fail" ? localization.infoTitle.error[lang] : downloadStatus === "success" ? localization.infoTitle.fileLink[lang] : localization.infoTitle.download[lang]}
+          {downloadStatus === "fail" ? localization.infoTitle.error[lang] : downloadStatus === "requestFail" ? localization.infoTitle.error[lang] : downloadStatus === "success" ? localization.infoTitle.fileLink[lang] : localization.infoTitle.download[lang]}
             </Typography>
           <a href={videoUrl} target="_blank">
             <Typography sx={{mt: 1, ml: 3, mr: 3, fontSize:"20px", color: "#aaa5ec"}}>
-              {downloadStatus === "fail" ? downloadInfo[lang] : downloadStatus === "success" ? downloadInfo : localization.infoDescription.notDownload[lang]}
+              {downloadStatus === "fail" ? downloadInfo[lang] : downloadStatus === "requestFail" ? downloadInfo[lang] : downloadStatus === "success" ? downloadInfo : localization.infoDescription.notDownload[lang]}
             </Typography>
           </a>
         </div>

@@ -1,35 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, TextField } from "@mui/material";
+import { Typography, FormControl, InputLabel, Select, MenuItem, TextField, Button } from "@mui/material";
 import Switch from '@mui/material/Switch';
-import { useLanguage } from "../LanguageContext";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from "@mui/icons-material/Error";
 import { localization } from "../util/localization";
+import { useLanguage } from "../LanguageContext";
 import { useAutoDownload } from '../autoDownload';
+import { useServerUrl } from '../serverUrl';
 
 export default function PreferencesPage() {
     const { lang, changeLanguage } = useLanguage();
     const { auto, changeAutoDownload } = useAutoDownload();
-    const [ apiServerURL, setApiServerURL ] = useState(() => {
-        return localStorage.getItem("apiServer") || "https://meow.akkkou.com";
-    });
+    const { serverUrl, changeServerUrl } = useServerUrl();
+    const [ serverStatus, setServerStatus ] = useState("checking");
+    const defaultServerUrl = "https://meow.akkkou.com/"
 
     const handleChange = (e) => {
         changeLanguage(e.target.value);
     };
 
-    const handleApiServerChange = (e) => {
-        setApiServerURL(e.target.value);
+    const handleServerChange = (e) => {
+        changeServerUrl(e.target.value);
     };
 
     const handleAutoDownloadChange = (e) => {
         changeAutoDownload(e.target.checked);
     };
 
-    // 更新 localStorage
+    const checkServerStatus = async () => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        
+        try {
+            const response = await fetch(serverUrl, { 
+                method: "HEAD", 
+                signal: controller.signal
+            });
+
+            if (response.ok) {
+                setServerStatus("online");
+            } else {
+                setServerStatus("offline");
+            }
+        } catch (error) {
+            setServerStatus("offline");
+        } finally {
+            clearTimeout(timeoutId);
+        }
+    };
+
     useEffect(() => {
         localStorage.setItem("lang", lang);
         localStorage.setItem("autoDownload", auto);
-    }, [lang, auto]);
-
+        localStorage.setItem("serverUrl", serverUrl);
+    
+        const intervalId = setInterval(checkServerStatus, 5000);
+        return () => clearInterval(intervalId);
+    }, [lang, auto, serverUrl]);
+    
     return (
         <div className="w-full h-full flex flex-col items-center bg-green-100">
             <div className='flex gap-20'>
@@ -47,7 +75,7 @@ export default function PreferencesPage() {
                             onChange={handleChange}
                             MenuProps={{
                                 disableScrollLock: true,
-                                disablePortal: false,  // 確保選單渲染在 `body` 外，避免 `aria-hidden` 問題
+                                disablePortal: false
                             }}
                             >
                             <MenuItem value="zh-TW">繁體中文</MenuItem>
@@ -67,23 +95,26 @@ export default function PreferencesPage() {
                     <Typography variant="h5" sx={{ mt: 3, color: "#7E9F98" }}>
                         {localization.preference_menu.apiServerURL[lang]}
                     </Typography>
-                    <TextField
-                        variant="outlined"
-                        placeholder="Enter Server URL..."
-                        label="URL"
-                        value={apiServerURL}
-                        onChange={(e) => handleApiServerChange(e)}
-                        sx={{
-                        mt: 2,
-                        width: "250px",
-                        backgroundColor: "#FDE4DF",
-                        }}
-                        id="url"
-                        disabled
-                    />
+                    <div className='flex items-center ml-7'>
+                        <TextField
+                            variant="outlined"
+                            placeholder="Enter Server URL..."
+                            label="URL"
+                            value={serverUrl}
+                            onChange={(e) => handleServerChange(e)}
+                            sx={{
+                                mt: 2,
+                                width: "250px",
+                                backgroundColor: "#FDE4DF"
+                            }}
+                        />
+                        {serverStatus === "online" ? 
+                            (<CheckCircleIcon sx={{ color: "green", mt: 2, ml: 1 }} />) : (<ErrorIcon sx={{ color: "red", mt: 2, ml: 1 }} />)
+                        }
+                    </div>
+                    <Button onClick={(e) => changeServerUrl(defaultServerUrl)} sx={{ display: serverUrl == defaultServerUrl ? "none" : "block"}}>{localization.preference_menu.resetServerURL[lang]}</Button>
                 </div>
             </div>
-            
         </div>
     );
 }
