@@ -3,7 +3,6 @@ import DownloadHistoryPage from "./pages/DownloadHistory";
 import PreferencesPage from "./pages/Preferences";
 import { open } from '@tauri-apps/plugin-shell';
 import { TextField, Button, Typography, Tabs, Tab, IconButton } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Download } from "@mui/icons-material";
 import { localization } from "./util/localization";
 import { localizationDownloadHistory } from "./util/download history";
@@ -13,46 +12,6 @@ import { useLanguage } from "./LanguageContext";
 import { useAutoDownload } from "./autoDownload";
 import { useServerUrl } from "./serverUrl";
 import "./index.css";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#1976d2", // 設定主色
-    },
-    secondary: {
-      main: "#dc004e",
-    },
-  },
-  typography: {
-    // fontFamily: "Noto Sans JP, sans-serif", // 使用 Google 字體
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: "none", // 取消按鈕文字大寫
-          backgroundColor: "#5A5058", // 設定背景色
-        },
-      },
-    },
-
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          color: "#7E9F98", // 設定文字顏色
-        },
-      },
-    },
-    
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          textTransform: "none",
-        },
-      },
-    },
-  },
-});
 
 export default function App() {
   const { lang, changeLanguage } = useLanguage();
@@ -126,13 +85,11 @@ export default function App() {
   return (
       <div className="relative flex flex-col">
         <div className="w-full bg-gray-200">
-            <ThemeProvider theme={theme}>
-              <Tabs value={page}>
-                <Tab onClick={() => setPage(0)} label={localization.home[lang]} />
-                <Tab onClick={() => setPage(1)} label={localization.preference_menu.preference[lang]} />
-                <Tab onClick={() => setPage(2)} label={localizationDownloadHistory.downloadHistory[lang]} />
-              </Tabs>
-            </ThemeProvider>
+          <Tabs value={page}>
+            <Tab onClick={() => setPage(0)} sx={{ textTransform: "none" }} label={localization.home[lang]} />
+            <Tab onClick={() => setPage(1)} sx={{ textTransform: "none" }} label={localization.preference_menu.preference[lang]} />
+            <Tab onClick={() => setPage(2)} sx={{ textTransform: "none" }} label={localizationDownloadHistory.downloadHistory[lang]} />
+          </Tabs>
         </div>
         <div className="absolute top-12 left-0 w-full h-screen flex flex-col items-center bg-green-100">
           <div className="flex w-19/20 mt-5">
@@ -147,7 +104,7 @@ export default function App() {
               tabIndex={0}
               sx={{
                 mr: 2,
-                backgroundColor: "#FDE4DF",
+                backgroundColor: "#F8EFEE",
               }}
               id="url"
             />
@@ -161,17 +118,15 @@ export default function App() {
             {localization.downloadOptionsTitle[lang]}
           </Typography>
           <div className="flex space-x-4 mt-4">
-            <ThemeProvider theme={theme}>
-              <Button variant="contained" sx={{mr: 2, fontSize:"20px"}} size="large" onClick={() => setOption("auto")}>
-                {localization.downloadOptionsButton.videoAndAudio[lang]}
-              </Button>
-              <Button variant="contained" sx={{mr: 2, fontSize:"20px"}} size="large" onClick={() => setOption("audio")}>
-                {localization.downloadOptionsButton.audioOnly[lang]}
-              </Button>
-              <Button variant="contained" sx={{fontSize:"20px"}} size="large" onClick={() => setOption("mute")}>
-                {localization.downloadOptionsButton.videoOnly[lang]}
-              </Button>
-            </ThemeProvider>
+            <Button variant="contained" sx={{mr: 2, fontSize:"20px", backgroundColor: option == "auto" ? "#41313e" : "#5A5058", textTransform: "none"}} size="large" onClick={() => setOption("auto")}>
+              {localization.downloadOptionsButton.videoAndAudio[lang]}
+            </Button>
+            <Button variant="contained" sx={{mr: 2, fontSize:"20px", backgroundColor: option == "audio" ? "#41313e" : "#5A5058", textTransform: "none"}} size="large" onClick={() => setOption("audio")}>
+              {localization.downloadOptionsButton.audioOnly[lang]}
+            </Button>
+            <Button variant="contained" sx={{fontSize:"20px", backgroundColor: option == "mute" ? "#41313e" : "#5A5058", textTransform: "none"}} size="large" onClick={() => setOption("mute")}>
+              {localization.downloadOptionsButton.videoOnly[lang]}
+            </Button>
           </div>
           
           <div className="flex mt-4">

@@ -105,7 +105,7 @@ export default function PreferencesPage() {
                             sx={{
                                 mt: 2,
                                 width: "250px",
-                                backgroundColor: "#FDE4DF"
+                                backgroundColor: "#F8EFEE"
                             }}
                         />
                         {serverStatus === "online" ? 
