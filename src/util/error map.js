@@ -9,7 +9,8 @@ export const errorMap = {
     "error.api.content.post.private": {"zh-TW": "影片為私人影片", "en-US": "The content is private", "ja-JP": "この動画は非公開です", "ko-KR": "비디오가 비공개입니다", "tr-TR": "Video özel"},
     "error.api.fetch.empty": {"zh-TW": "無法取得影片", "en-US": "Unable to retrieve video", "ja-JP": "動画が取得できません", "ko-KR": "비디오를 검색할 수 없음", "tr-TR": "Video alınamıyor"},
     "error.api.fetch.critical": {"zh-TW": "無法取得影片", "en-US": "Unable to retrieve video", "ja-JP": "動画が取得できません", "ko-KR": "비디오를 검색할 수 없음", "tr-TR": "Video alınamıyor"},
+    "error.api.fetch.fail": {"zh-TW": "無法取得影片", "en-US": "Unable to retrieve video", "ja-JP": "動画が取得できません", "ko-KR": "비디오를 검색할 수 없음", "tr-TR": "Video alınamıyor"},
     "error.api.content.video.live": {"zh-TW": "無法下載直播影片", "en-US": "Unable to download live video", "ja-JP": "ライブ動画をダウンロードできません", "ko-KR": "라이브 비디오를 다운로드할 수 없습니다", "tr-TR": "Canlı video indirilemiyor"},
-    "failToConnectToServer": {"zh-TW": "無法連線至伺服器", "en-US": "Failed to connect to server", "ja-JP": "サーバーに接続できません", "ko-KR": "서버에 연결할 수 없습니다", "tr-TR": "Sunucuya bağlanılamadı"},
+    "failToConnectToServer": {"zh-TW": "無法連線至伺服器，請檢查網路連線，或使用預設的 API 伺服器網址", "en-US": "Unable to connect to the server. Please check your network connection or use the default API server URL.", "ja-JP": "サーバーに接続できません。ネットワーク接続を確認するか、デフォルトの API サーバー URL を使用してください。", "ko-KR": "서버에 연결할 수 없습니다. 네트워크 연결을 확인하거나 기본 API 서버 URL을 사용하세요.", "tr-TR": "Sunucuya bağlanılamadı. Lütfen ağ bağlantınızı kontrol edin veya varsayılan API sunucu URL'sini kullanın."},
     "unknownError": {"zh-TW": "未知的錯誤", "en-US": "Unknown error", "ja-JP": "未知のエラー", "ko-KR": "알 수 없는 오류", "tr-TR": "Bilinmeyen hata"},
 };

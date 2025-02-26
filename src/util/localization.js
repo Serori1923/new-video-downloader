@@ -15,11 +15,11 @@ export const localization = {
         audioOnly: {"zh-TW": "只載聲音", "en-US": "Audio Only", "ja-JP": "音声のみ", "ko-KR": "오디오만", "tr-TR": "Sadece Ses"},
         videoOnly: {"zh-TW": "只載影片", "en-US": "Video Only", "ja-JP": "動画のみ", "ko-KR": "비디오만", "tr-TR": "Sadece Video"}
     },
-    downloadStatusTitle: {"zh-TW": "下載狀態:", "en-US": "Download Status:", "ja-JP": "ダダウンロード状態:", "ko-KR": "다운로드 상태:", "tr-TR": "İndirme Durumu:"},
+    downloadStatusTitle: {"zh-TW": "下載狀態:", "en-US": "Download Status:", "ja-JP": "ダウンロード状態:", "ko-KR": "다운로드 상태:", "tr-TR": "İndirme Durumu:"},
     status:{
         ready: {"zh-TW": "服務已準備就緒，等待中...", "en-US": "Service is ready, waiting...", "ja-JP": "サービスは準備完了、待機中...", "ko-KR": "서비스가 준비되었습니다, 대기 중...", "tr-TR": "Servis hazır, bekleniyor..."},
         downloading: {"zh-TW": "下載中...", "en-US": "Downloading...", "ja-JP": "ダウンロード中...", "ko-KR": "다운로드 중...", "tr-TR": "İndiriliyor..."},
-        requestFail: {"zh-TW": "請求失敗，請檢查網路連線", "en-US": "Request failed, please check your network connection", "ja-JP": "リクエストに失敗しました、ネットワーク接続を確認してください", "ko-KR": "요청 실패, 네트워크 연결을 확인하세요", "tr-TR": "İstek başarısız oldu, lütfen ağ bağlantınızı kontrol edin"},
+        requestFail: {"zh-TW": "請求失敗", "en-US": "Request failed", "ja-JP": "リクエストに失敗しました", "ko-KR": "요청 실패", "tr-TR": "İstek başarısız oldu"},
         fail: {"zh-TW": "失敗", "en-US": "Failed", "ja-JP": "失敗", "ko-KR": "실패", "tr-TR": "Başarısız"},
         success: {"zh-TW": "下載成功", "en-US": "Download successful", "ja-JP": "ダウンロード成功", "ko-KR": "다운로드 성공", "tr-TR": "İndirme Başarılı"},
     },
