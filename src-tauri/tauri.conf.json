@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Video Dowloader v1.0.0",
+  "version": "1.0.0",
+  "identifier": "com.Serori1923.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Video Dowloader v1.0.0",
+        "width": 755,
+        "height": 450,
+        "minWidth": 755,
+        "minHeight": 450
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "allowDowngrades": false,
+      "nsis": {
+        "installerIcon": "icons/icon.ico",
+        "sidebarImage": "images/sidebar.bmp"
+      }
+    },
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEU5MTdFMUZEQTVDNzMxM0EKUldRNk1jZWwvZUVYNlNvQjNidTBoc1F2d2grQWVaMG45SlpqYU9oclNmUmtpRXNuS2FBaE5lc3UK",
+      "endpoints": ["https://raw.githubusercontent.com/Serori1923/new-video-downloader/refs/heads/main/updates/latest.json?t={{timestamp}}"]
+    }
+  }
+}
