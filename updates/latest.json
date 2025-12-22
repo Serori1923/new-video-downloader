@@ -1,11 +1,11 @@
 {
-  "version": "1.0.0",
-  "notes": "Application released",
-  "pub_date": "2025-12-16T03:03:00+08:00",
+  "version": "1.1.0",
+  "notes": "refactor: Switch the YouTube download feature to be powered by yt-dlp",
+  "pub_date": "2025-12-23T01:55:00+08:00",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNk1jZWwvZUVYNmF4c0o2emVXUGg0Y0x3QWh0c3V5dUdPK1BobUdyQVI5ZHN0RWVGdjZHZEVzSFhPamsrQWliMlpLemhqVFJxL3JJODF5U1hFN0pmOEhCSnVuZ0FaU0FrPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzY1OTgzMDkzCWZpbGU6VmlkZW8gRG93bG9hZGVyIHYxLjAuMF8xLjAuMF94NjQtc2V0dXAuZXhlCkpCT0R2ZzRwczEvcUhFaGF6bzhLdUJBQkxZS0NJNW0rRUdLUVZlL1FJZzEwOTBMaTMwYVRyeU1YbWxUTXJacWhrR0VXcjRlUnljRFkrc2dLclFuVEJnPT0K",
-      "url": "https://github.com/Serori1923/new-video-downloader/releases/download/v1.0.0/1.0.0_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNk1jZWwvZUVYNlNlWG1RUFk5Z0pDbW1WYVBoVkx5QUZSYmFuSHR1elZaYzFZOEFCcmRCc3hIb3FoL2Nad2srNEtPYlNrTTNoamNKelRDWHlxK3NnYS9XRnNUN0U2d3dNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzY2NDI2MDYyCWZpbGU6VmlkZW8gRG93bG9hZGVyIHYxLjEuMF8xLjEuMF94NjQtc2V0dXAuZXhlCnVUMUVHSHlnUlpaZ2pXSVFnZmNaVVNrcE9IaTQ1SUJUd2JGYzdYQ3piaklDQ2dhSUYvR082ZWhONkJSTnVjM0R0WGIyZE5ramJuVXFvM3VvVGFCcERnPT0K",
+      "url": "https://github.com/Serori1923/new-video-downloader/releases/download/v1.1.0/1.1.0_x64-setup.exe"
     }
   }
 }
