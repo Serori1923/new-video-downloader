@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Video Dowloader v1.1.0",
+  "productName": "Video Downloader",
   "version": "1.1.0",
   "identifier": "com.Serori1923.app",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Video Dowloader v1.1.0",
+        "title": "Video Downloader v1.1.0",
         "width": 755,
         "height": 450,
         "minWidth": 755,
