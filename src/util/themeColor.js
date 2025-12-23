@@ -34,7 +34,11 @@ export const themeColor = {
             readmeBackgroundColor: { "light": "#F0F6FC", "dark": "#222F41"},
             readmeFontColor: { "light": "#81001B", "dark": "white"},
             ignoreButtonBackgroundColor: { "light": "#5A5058", "dark": "#222F41" },
-            updateButtonBackgroundColor: { "light": "#41313e", "dark": "#57687A" }
+            updateButtonBackgroundColor: { "light": "#41313e", "dark": "#57687A" },
+            progressBar: {
+                backgroundColor: { "light": "#81001B", "dark": "#101720" },
+                progressColor: { "light": "#878ac9", "dark": "#EEEEEE" },
+            }
         }
     },
     preferences: {

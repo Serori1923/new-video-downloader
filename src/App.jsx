@@ -440,9 +440,9 @@ export default function App() {
                 <LinearProgress
                   variant="determinate"
                   value={progress}
-                  sx={{ mt: 2, height: 8, borderRadius: 4, backgroundColor: '#e0e7ff',
+                  sx={{ mt: 2, height: 8, borderRadius: 4, backgroundColor: themeSet.updateDialog.progressBar.backgroundColor[theme],
                     '& .MuiLinearProgress-bar': {
-                      backgroundColor: '#1976d2',
+                      backgroundColor: themeSet.updateDialog.progressBar.progressColor[theme],
                     }
                   }}
                 />
