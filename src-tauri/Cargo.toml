@@ -1,6 +1,6 @@
 [package]
 name = "video-downloader"
-version = "1.0.0"
+version = "1.1.0"
 description = "A download tool"
 authors = ["Serori1923"]
 edition = "2021"
@@ -15,10 +15,12 @@ tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-reqwest = { version = "0.11", features = ["json"] }
+reqwest = { version = "0.11", features = ["blocking", "json"] }
 tauri-plugin-shell = "2"
 tauri-plugin-fs = "2.0.0"
 tauri-plugin-process = "2"
+tokio = { version = "1", features = ["full"] }
+regex = "1"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-updater = "2"
