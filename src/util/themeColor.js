@@ -98,13 +98,27 @@ export const themeColor = {
         snackbar: {
             backgroundColor: { "light": "white", "dark": "#15202B" },
             fontColor: { "light": "#81001B", "dark": "#EEEEEE" },
-
         }
     },
     twitterPicker: {
         backgroundColor: { "light": "#FFFDF0", "dark": "#15202B" },
         fontColor: { "light": "#81001B", "dark": "#EEEEEE" },
         imageBackgroundColor: { "light": "#212427", "dark": "#101720" }
+    },
+    youtubeProcess: {
+        backgroundColor: { "light": "#FFFDF0", "dark": "#15202B" },
+        fontColor: { "light": "#81001B", "dark": "#EEEEEE" },
+        processBackgroundColor: {"light": "#F4F4F4", "dark": "#222F41" },
+        success: { "light": "#93e374", "dark": "#76BE5B" },
+        fail: { "light": "#B0B0B0", "dark": "#55606A" },
+        scrollbar: {
+            trackBackgroundColor: { "light": "#81001B", "dark": "#101720" },
+            thumbBackgroundColor: { "light": "#EEEEEE", "dark": "#EEEEEE" },
+        },
+        progressBar: {
+            backgroundColor: { "light": "#81001B", "dark": "#101720" },
+            progressColor: { "light": "#878ac9", "dark": "#EEEEEE" },
+        }
     }
 };
 
