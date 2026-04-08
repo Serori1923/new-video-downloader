@@ -209,11 +209,11 @@ export default function PreferencesPage() {
                             (<CheckCircleIcon sx={{ color: "green", mt: 2, ml: 1 }} />) : (<ErrorIcon sx={{ color: "red", mt: 2, ml: 1 }} />)
                         }
                     </div>
-                    <Button onClick={(e) => changeServerUrl(defaultServerUrl)} sx={{ display: serverUrl == defaultServerUrl ? "none" : "block"}} style={{ color: themeSet.resetButton[theme] }}>{localizationPreference.resetServerURL[lang]}</Button>
+                    <Button onClick={(e) => changeServerUrl(defaultServerUrl)} sx={{ mt: 1, mb: 1, display: serverUrl == defaultServerUrl ? "none" : "block"}} style={{ color: themeSet.resetButton[theme] }}>{localizationPreference.resetServerURL[lang]}</Button>
                 </div> 
             </div>
             
-            <div className="flex flex-wrap gap-4 justify-center mt-15">
+            <div className="flex flex-wrap gap-4 justify-center mt-10">
                 <div className='items-center flex flex-col w-[310px] shadow-[0px_0px_15px_rgba(0,0,0,0.4)]' style={{backgroundColor: themeSet.optionBackgroundColor[theme], borderRadius: "16px", padding: "20px", color: themeSet.fontColor[theme] }}>
                     <Typography variant="h5" sx={{ fontWeight:"bold"}}>
                         {localizationPreference.autoDownload[lang]}
