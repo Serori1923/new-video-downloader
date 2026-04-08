@@ -1,11 +1,11 @@
 {
-  "version": "1.1.0",
-  "notes": "refactor: Switch the YouTube download feature to be powered by yt-dlp",
-  "pub_date": "2025-12-23T01:55:00+08:00",
+  "version": "1.1.1",
+  "notes": "fix: fix the bug that video cannot previewed in picker page",
+  "pub_date": "2026-04-09T02:45:00+08:00",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNk1jZWwvZUVYNlk1K05UZGZWUDBJWWpxRHErREs1WVk5c3ZXdVJiWDNwK0huVWhjREJYNTBRU3dXQklWMGZHNG0xcTdpdEt3YnJ0aTdFVURhaTlybk8wS0ZwdDY5ZUE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzY2NDkwNDIzCWZpbGU6VmlkZW8gRG93bmxvYWRlcl8xLjEuMF94NjQtc2V0dXAuZXhlCmRLc2srTHEwTGxTOSt3Y2JnVTlGVXdxK3VGV0F5bVpuM0pvYmkyTmNkbHlSaXNxQzdoMFptU1JxdzVXc0lrMTBHdll2amhtd3BWTnUzQ0FncUZvMkJnPT0K",
-      "url": "https://github.com/Serori1923/new-video-downloader/releases/download/v1.1.0/1.1.0_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNk1jZWwvZUVYNlowYVFsQ3VFL2RlSU9tR09vQUxyaHF3QTd1ek1VNVhGMGQzUm1udkpKalZXQ0c4N1kvaURkazBEbXg1QmNHclBnOW51YnJYeDkvZUVjNS8zL0xuZkFBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc1NjczMzYwCWZpbGU6VmlkZW8gRG93bmxvYWRlcl8xLjEuMV94NjQtc2V0dXAuZXhlCmpYc1hxWmxhQmFKTyt1YjJaQUZPUG5oZjQ1S3h2L0lBQzVkZ3ZoRFpHZWpHcGkvUzMwSTNiL2k4WWgzZjRqTmVUcHFwS0RCc0w3UUtQNHg0d3JDWEFnPT0K",
+      "url": "https://github.com/Serori1923/new-video-downloader/releases/download/v1.1.1/1.1.1_x64-setup.exe"
     }
   }
 }
