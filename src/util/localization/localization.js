@@ -3,7 +3,7 @@ export const localization = {
         home:{"zh-TW": "首頁", "en-US": "Home", "ja-JP": "ホーム", "ko-KR": "홈", "tr-TR": "Anasayfa"},
         preference: {"zh-TW": "偏好設定", "en-US": "Preference", "ja-JP": "設定", "ko-KR": "환경설정", "tr-TR": "Tercihler"},
         downloadHistory: {"zh-TW": "歷史下載清單", "en-US": "Download History", "ja-JP": "ダウンロード履歴", "ko-KR": "다운로드 기록", "tr-TR": "İndirme Geçmişi"},
-        twitterPicker: {"zh-TW": "Twitter 檔案選擇", "en-US": "Twitter Picker", "ja-JP": "Twitter ピッカー", "ko-KR": "트위터 픽커", "tr-TR": "Twitter Seçici"}
+        picker: {"zh-TW": "檔案選擇", "en-US": "Picker", "ja-JP": "ピッカー", "ko-KR": "픽커", "tr-TR": "Seçici"}
     },
     downloadOptionsTitle: {"zh-TW": "下載選項", "en-US": "Download Options", "ja-JP": "ダウンロードオプション", "ko-KR": "다운로드 옵션", "tr-TR": "İndirme Seçenekleri"},
     downloadOptionsButton:{
@@ -23,7 +23,7 @@ export const localization = {
         error : {"zh-TW": "錯誤訊息", "en-US": "Error Message", "ja-JP": "エラーメッセージ", "ko-KR": "오류 메시지", "tr-TR": "Hata Mesajı"},
         download: {"zh-TW": "下載訊息", "en-US": "Download Info", "ja-JP": "ダウンロードメッセージ", "ko-KR": "다운로드 메시지", "tr-TR": "İndirme Mesajı"},
         fileLink: {"zh-TW": "檔案連結", "en-US": "File Link", "ja-JP": "ファイルリンク", "ko-KR": "파일 링크", "tr-TR": "Dosya Bağlantısı"},
-        twitterPicker: {"zh-TW": "Twitter 檔案選擇", "en-US": "Twitter Picker", "ja-JP": "Twitter ピッカー", "ko-KR": "트위터 픽커", "tr-TR": "Twitter Seçici"}
+        picker: {"zh-TW": "檔案選擇", "en-US": "Picker", "ja-JP": "ピッカー", "ko-KR": "픽커", "tr-TR": "Seçici"}
     },
     infoDescription:{
         notDownload: {"zh-TW": "尚未下載", "en-US": "Not yet downloaded", "ja-JP": "ダウンロードされていません", "ko-KR": "다운로드되지 않음", "tr-TR": "İndirilmedi"},
