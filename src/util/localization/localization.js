@@ -3,6 +3,7 @@ export const localization = {
         home:{"zh-TW": "首頁", "en-US": "Home", "ja-JP": "ホーム", "ko-KR": "홈", "tr-TR": "Anasayfa"},
         preference: {"zh-TW": "偏好設定", "en-US": "Preference", "ja-JP": "設定", "ko-KR": "환경설정", "tr-TR": "Tercihler"},
         downloadHistory: {"zh-TW": "歷史下載清單", "en-US": "Download History", "ja-JP": "ダウンロード履歴", "ko-KR": "다운로드 기록", "tr-TR": "İndirme Geçmişi"},
+        youtubeDownload: {"zh-TW": "Youtube 下載", "en-US": "YouTube Download", "ja-JP": "YouTube ダウンロード", "ko-KR": "YouTube 다운로드", "tr-TR": "YouTube İndirme"},
         picker: {"zh-TW": "檔案選擇", "en-US": "Picker", "ja-JP": "ピッカー", "ko-KR": "픽커", "tr-TR": "Seçici"}
     },
     downloadOptionsTitle: {"zh-TW": "下載選項", "en-US": "Download Options", "ja-JP": "ダウンロードオプション", "ko-KR": "다운로드 옵션", "tr-TR": "İndirme Seçenekleri"},
