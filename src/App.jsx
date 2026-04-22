@@ -3,9 +3,13 @@ import ReactMarkdown from 'react-markdown';
 import { open } from '@tauri-apps/plugin-shell';
 import { check } from '@tauri-apps/plugin-updater';
 import { relaunch } from '@tauri-apps/plugin-process';
+import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
+import { v4 as uuidv4 } from 'uuid';
 import DownloadHistoryPage from "./pages/DownloadHistory";
 import PreferencesPage from "./pages/Preferences";
 import TwitterPickerPage from "./pages/TwitterPicker";
+import YoutubeProcess from "./pages/YoutubeProcess";
 import { TextField, Button, Typography, Tabs, Tab, IconButton } from "@mui/material";
 import { Snackbar, Alert, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { LinearProgress, Box, CircularProgress } from '@mui/material';
@@ -28,6 +32,7 @@ export default function App() {
   const [url, setUrl] = useState("");
   const [downloadStatus, setDownloadStatus] = useState("");
   const [downloadInfo, setDownloadInfo] = useState("");
+  const [tasks, setTasks] = useState([]);
   const [option, setOption] = useState("auto");
   const [page, setPage] = useState(0);
   const [videoUrl, setVideoUrl] = useState("");
@@ -69,7 +74,7 @@ export default function App() {
         },
       });
 
-      if (update) {
+      if(update) {
         setUpdateInfo(update);
         setDialogUpdate(true);
         await fetchReadme();
@@ -82,7 +87,7 @@ export default function App() {
 
   const installUpdate = async () => {
     try {
-      if (!updateInfo) throw "未取得更新資訊";
+      if(!updateInfo) throw "未取得更新資訊";
   
       let downloaded = 0;
       let contentLength = 0;
@@ -125,7 +130,7 @@ export default function App() {
   }, []);
 
   const handleUpdateButtonClick = () => {
-    if (!loading) {
+    if(!loading) {
       setLoading(true);
       timer.current = setTimeout(() => {
         setSuccess(true);
@@ -136,13 +141,90 @@ export default function App() {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if(e.key === "Enter") {
       download();
+    }
+  }; 
+
+  useEffect(() => {
+    // 監聽進度更新
+    const unlistenProgress = listen('download-progress', (event) => {
+      const { id, progress, filename, status } = event.payload;
+      
+      setTasks(prev => prev.map(task => 
+        task.id === id ? { ...task, progress, filename, status } : task
+      ));
+    });
+
+    // 監聽完成事件
+    const unlistenComplete = listen('download-complete', (event) => {
+      const { id, filename, status } = event.payload;
+
+      // 更新前端任務狀態
+      setTasks(prev => {
+        const targetTask = prev.find(t => t.id === id);
+
+        console.log(status);
+        if(targetTask && status === 'complete') {
+          setDownloadStatus("success");
+          setVideoUrl("youtube");
+          setDownloadInfo(filename);
+          saveNewHistory(filename, targetTask.url);
+        }
+
+        if(status == "error" && filename == "notSupportLiveStream"){
+          setDownloadStatus("fail");
+          setVideoUrl("youtube");
+          setDownloadInfo(errorMap["error.api.content.video.live"])
+        }
+        else if(status == "error"){
+          setDownloadStatus("fail");
+          setVideoUrl("youtube");
+          setDownloadInfo(errorMap["error.api.link.invalid"])
+        }
+
+        return prev.map(task => 
+          task.id === id ? {
+            ...task,
+            progress: status === 'complete' ? 100 : 0,
+            status: status,
+            filename
+          } : task
+        );
+      });
+    });
+
+    return () => {
+      unlistenProgress.then(f => f());
+      unlistenComplete.then(f => f());
+    };
+  }, []);
+
+  const startDownload = async () => {
+    if(!url) return;
+    const newId = uuidv4();
+    const newTask = { id: newId, url, progress: 0, filename: 'preparing', status: 'waitingForStart' };
+    
+    setTasks(prev => [...prev, newTask]);
+
+    try {
+      await invoke('download_video', { id: newId, url: url, mode: option });
+    } catch (e) {
+      console.error(e);
+      setTasks(prev => prev.map(t => t.id === newId ? {...t, status: `Error: ${e}`} : t));
     }
   };
 
   const download = async () => {
     setDownloadStatus("downloading");
+
+    let youtubeUrlKeywords = ["youtu.be", "youtube.com"];
+    if(youtubeUrlKeywords.some(keyword => url.includes(keyword))){
+      startDownload();
+      setPage(3);
+      return;
+    }
+
     const requestData = {
       url: url,
       videoQuality: "max",
@@ -181,7 +263,7 @@ export default function App() {
         setTwitterPickerData(data.picker);
         setVideoUrl("picker");
         saveNewHistory("MultipleFiles", url);
-        setPage(3);
+        setPage(4);
       }
 
       else{
@@ -223,7 +305,8 @@ export default function App() {
             <Tab onClick={() => setPage(0)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold" }} label={localization.tabs.home[lang]} />
             <Tab onClick={() => setPage(1)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold" }} label={localization.tabs.preference[lang]} />
             <Tab onClick={() => setPage(2)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold" }} label={localization.tabs.downloadHistory[lang]} />
-            <Tab onClick={() => setPage(3)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold", display: page == 3 ? "block" : "none" }} label={localization.tabs.twitterPicker[lang]} />
+            <Tab onClick={() => setPage(3)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold", display: tasks.length > 0 ? "block" : "none" }} label={localization.tabs.youtubeDownload[lang]} />
+            <Tab onClick={() => setPage(4)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold", display: page == 4 ? "block" : "none" }} label={localization.tabs.picker[lang]} />
           </Tabs>
         </div>
         <div className="absolute top-12 left-0 w-full h-screen flex flex-col items-center" style={{ backgroundColor: themeSet.backgroundColor[theme]}}>
@@ -310,9 +393,13 @@ export default function App() {
 
           {/* Download Info */}
           <Typography sx={{ mt: 3, fontSize:"15px", maxWidth: "70%" }} style={{ color: themeSet.downloadInfoFontColor[theme] }}>
-            {videoUrl === "picker" ? (
-              <a href="#" onClick={(e) => {e.preventDefault();setPage(3);}} style={{ cursor: "pointer" }}>
-                {downloadStatus === "fail" ? localization.infoTitle.error[lang] : downloadStatus === "requestFail" ? localization.infoTitle.error[lang] : downloadStatus === "success" ? localization.infoTitle.twitterPicker[lang]: localization.infoTitle.download[lang]}
+            {videoUrl === "youtube" ? (
+              <a href="#" onClick={(e) => {e.preventDefault(); setPage(3);}} style={{ cursor: "pointer" }}>
+                {downloadStatus === "fail" ? localization.infoTitle.error[lang] : downloadStatus === "requestFail" ? localization.infoTitle.error[lang] : downloadStatus === "success" ? downloadInfo : localization.infoTitle.download[lang]}
+              </a>
+            ) : videoUrl === "picker" ? (
+              <a href="#" onClick={(e) => {e.preventDefault(); setPage(4);}} style={{ cursor: "pointer" }}>
+                {downloadStatus === "fail" ? localization.infoTitle.error[lang] : downloadStatus === "requestFail" ? localization.infoTitle.error[lang] : downloadStatus === "success" ? localization.infoTitle.picker[lang] : localization.infoTitle.download[lang]}
               </a>
             ) : (
               <a href={videoUrl} target="_blank" style={{ pointerEvents: videoUrl ? "auto" : "none" }}>
@@ -323,8 +410,12 @@ export default function App() {
 
           {/* Download Button */}
           <Typography className="shadow-md" sx={{mt: 1, ml: 3, mr: 3, fontSize:"20px", color: themeSet.downloadButtonFontColor[theme]}} style={{borderRadius: "16px"}}>
-            {videoUrl === "picker" ? (
-              <a href="#" onClick={(e) => {e.preventDefault();setPage(3);}} style={{ width: "200px", minHeight: "50px", padding: "5px", borderRadius: "16px", fontWeight: "bold", justifyContent: "center", display: "flex", alignItems: "center", textAlign: "center", overflowWrap: "break-word", cursor: "pointer", backgroundColor: downloadStatus == "success" ? themeSet.success[theme] : downloadStatus == "fail" ? themeSet.fail[theme] : themeSet.fail[theme] }}>
+            {videoUrl === "youtube" ? (
+              <a href="#" onClick={(e) => {e.preventDefault(); setPage(3);}} style={{ width: "200px", minHeight: "50px", padding: "5px", borderRadius: "16px", fontWeight: "bold", justifyContent: "center", display: "flex", alignItems: "center", textAlign: "center", overflowWrap: "break-word", cursor: "pointer", backgroundColor: downloadStatus == "success" ? themeSet.success[theme] : downloadStatus == "fail" ? themeSet.fail[theme] : themeSet.fail[theme] }}>
+                {downloadStatus === "fail" ? downloadInfo[lang] : downloadStatus === "requestFail" ? downloadInfo[lang] : downloadStatus === "success" ? localization.infoDescription.lookUp[lang] : localization.infoDescription.notDownload[lang]}
+              </a>
+            ) : videoUrl === "picker" ? (
+              <a href="#" onClick={(e) => {e.preventDefault(); setPage(4);}} style={{ width: "200px", minHeight: "50px", padding: "5px", borderRadius: "16px", fontWeight: "bold", justifyContent: "center", display: "flex", alignItems: "center", textAlign: "center", overflowWrap: "break-word", cursor: "pointer", backgroundColor: downloadStatus == "success" ? themeSet.success[theme] : downloadStatus == "fail" ? themeSet.fail[theme] : themeSet.fail[theme] }}>
                 {downloadStatus === "fail" ? downloadInfo[lang] : downloadStatus === "requestFail" ? downloadInfo[lang] : downloadStatus === "success" ? localization.infoDescription.lookUp[lang] : localization.infoDescription.notDownload[lang]}
               </a>
             ) : (
@@ -346,6 +437,10 @@ export default function App() {
           </div>
 
           <div className={`w-full h-screen absolute duration-500 ${page === 3 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}>
+            <YoutubeProcess tasks={tasks} />
+          </div>
+
+          <div className={`w-full h-screen absolute duration-500 ${page === 4 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}>
             <TwitterPickerPage picker={twitterPickerData} />
           </div>
         </div>
@@ -450,7 +545,7 @@ export default function App() {
             </DialogContent>
             <DialogActions sx={{ paddingX: 2 }}>
               <Button
-                sx={{ fontSize: "17px", backgroundColor: themeSet.updateDialog.ignoreButtonBackgroundColor[theme], color: 'white', paddingX: "15px" }}
+                sx={{ textTransform: "none", fontSize: "18px", backgroundColor: themeSet.updateDialog.ignoreButtonBackgroundColor[theme], color: 'white', paddingX: "15px", borderRadius: "24px" }}
                 onClick={() => setDialogUpdate(false)}
               >
                 {localization.updater.reminderLater[lang]}
@@ -458,7 +553,7 @@ export default function App() {
               <Box sx={{ m: 1, position: 'relative' }}>
                 <Button
                   variant="contained"
-                  sx={{ fontSize: "17px", backgroundColor: themeSet.updateDialog.updateButtonBackgroundColor[theme], color: 'white', paddingX: "15px" }}
+                  sx={{ textTransform: "none", fontSize: "18px", backgroundColor: themeSet.updateDialog.updateButtonBackgroundColor[theme], color: 'white', paddingX: "15px", borderRadius: "24px" }}
                   disabled={loading}
                   onClick={handleUpdateButtonClick}
                 >
