@@ -9,7 +9,24 @@
     "core:default",
     "opener:default",
     "shell:default",
+    "fs:default",
     "fs:allow-appdata-write",
-    "fs:allow-appdata-read"
+    "fs:allow-appdata-read",
+    {
+      "identifier": "fs:allow-write-file",
+      "allow": [
+        {
+          "path": "$DOWNLOAD/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-exists",
+      "allow": [
+        {
+          "path": "$DOWNLOAD/**"
+        }
+      ]
+    }
   ]
 }
