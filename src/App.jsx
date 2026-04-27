@@ -129,6 +129,12 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    document.body.style.backgroundColor = themeSet.backgroundColor[theme];
+    document.body.style.margin = "0";
+    document.body.style.minHeight = "100vh";
+  }, [theme, themeSet]);
+
   const handleUpdateButtonClick = () => {
     if(!loading) {
       setLoading(true);
@@ -287,7 +293,7 @@ export default function App() {
   };
 
   return (
-      <div className="relative flex flex-col">
+      <div className="relative flex flex-col min-h-screen w-full" style={{ minHeight: "100vh", backgroundColor: themeSet.backgroundColor[theme]}}>
         <div className="w-full" style={{ backgroundColor: themeSet.menu.backgroundColor[theme], fontWeight: "bold" }}>
           <Tabs value={page} sx={{
             '& .MuiTab-root': {
@@ -305,11 +311,11 @@ export default function App() {
             <Tab onClick={() => setPage(0)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold" }} label={localization.tabs.home[lang]} />
             <Tab onClick={() => setPage(1)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold" }} label={localization.tabs.preference[lang]} />
             <Tab onClick={() => setPage(2)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold" }} label={localization.tabs.downloadHistory[lang]} />
-            <Tab onClick={() => setPage(3)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold", display: tasks.length > 0 ? "block" : "none" }} label={localization.tabs.youtubeDownload[lang]} />
-            <Tab onClick={() => setPage(4)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold", display: page == 4 ? "block" : "none" }} label={localization.tabs.picker[lang]} />
+            <Tab onClick={() => setPage(3)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold", display: tasks.length > 0 ? "inline-flex" : "none" }} label={localization.tabs.youtubeDownload[lang]} />
+            <Tab onClick={() => setPage(4)} sx={{ textTransform: "none", color: themeSet.menu.fontColor[theme], fontWeight: "bold", display: page == 4 ? "inline-flex" : "none" }} label={localization.tabs.picker[lang]} />
           </Tabs>
         </div>
-        <div className="absolute top-12 left-0 w-full h-screen flex flex-col items-center" style={{ backgroundColor: themeSet.backgroundColor[theme]}}>
+        <div className="w-full flex-grow flex flex-col items-center" style={{ backgroundColor: themeSet.backgroundColor[theme]}}>
           <div className="flex w-19/20 mt-5 ml-3">
             <TextField
               fullWidth
@@ -409,17 +415,17 @@ export default function App() {
           </Typography>
 
           {/* Download Button */}
-          <Typography className="shadow-md" sx={{mt: 1, ml: 3, mr: 3, fontSize:"20px", color: themeSet.downloadButtonFontColor[theme]}} style={{borderRadius: "16px"}}>
+          <Typography className="shadow-md" sx={{mt: 1, ml: 3, mr: 3, fontSize:"20px", color: themeSet.downloadButtonFontColor[theme]}} style={{ borderRadius: "16px" }}>
             {videoUrl === "youtube" ? (
-              <a href="#" onClick={(e) => {e.preventDefault(); setPage(3);}} style={{ width: "200px", minHeight: "50px", padding: "5px", borderRadius: "16px", fontWeight: "bold", justifyContent: "center", display: "flex", alignItems: "center", textAlign: "center", overflowWrap: "break-word", cursor: "pointer", backgroundColor: downloadStatus == "success" ? themeSet.success[theme] : downloadStatus == "fail" ? themeSet.fail[theme] : themeSet.fail[theme] }}>
+              <a href="#" onClick={(e) => {e.preventDefault(); setPage(3);}} style={{ width: "230px", minHeight: "50px", padding: "5px", borderRadius: "16px", fontWeight: "bold", justifyContent: "center", display: "flex", alignItems: "center", textAlign: "center", overflowWrap: "break-word", cursor: "pointer", backgroundColor: downloadStatus == "success" ? themeSet.success[theme] : downloadStatus == "fail" ? themeSet.fail[theme] : themeSet.fail[theme] }}>
                 {downloadStatus === "fail" ? downloadInfo[lang] : downloadStatus === "requestFail" ? downloadInfo[lang] : downloadStatus === "success" ? localization.infoDescription.lookUp[lang] : localization.infoDescription.notDownload[lang]}
               </a>
             ) : videoUrl === "picker" ? (
-              <a href="#" onClick={(e) => {e.preventDefault(); setPage(4);}} style={{ width: "200px", minHeight: "50px", padding: "5px", borderRadius: "16px", fontWeight: "bold", justifyContent: "center", display: "flex", alignItems: "center", textAlign: "center", overflowWrap: "break-word", cursor: "pointer", backgroundColor: downloadStatus == "success" ? themeSet.success[theme] : downloadStatus == "fail" ? themeSet.fail[theme] : themeSet.fail[theme] }}>
+              <a href="#" onClick={(e) => {e.preventDefault(); setPage(4);}} style={{ width: "230px", minHeight: "50px", padding: "5px", borderRadius: "16px", fontWeight: "bold", justifyContent: "center", display: "flex", alignItems: "center", textAlign: "center", overflowWrap: "break-word", cursor: "pointer", backgroundColor: downloadStatus == "success" ? themeSet.success[theme] : downloadStatus == "fail" ? themeSet.fail[theme] : themeSet.fail[theme] }}>
                 {downloadStatus === "fail" ? downloadInfo[lang] : downloadStatus === "requestFail" ? downloadInfo[lang] : downloadStatus === "success" ? localization.infoDescription.lookUp[lang] : localization.infoDescription.notDownload[lang]}
               </a>
             ) : (
-              <a href={videoUrl} target="_blank" style={{ width: "200px", minHeight: "50px", padding: "5px", borderRadius: "16px", fontWeight: "bold", justifyContent: "center", display: "flex", alignItems: "center", textAlign: "center", overflowWrap: "break-word", pointerEvents: videoUrl ? "auto" : "none", backgroundColor: downloadStatus == "success" ? themeSet.success[theme] : downloadStatus == "fail" ? themeSet.fail[theme] : themeSet.fail[theme] }}>
+              <a href={videoUrl} target="_blank" style={{ width: "230px", minHeight: "50px", padding: "5px", borderRadius: "16px", fontWeight: "bold", justifyContent: "center", display: "flex", alignItems: "center", textAlign: "center", overflowWrap: "break-word", pointerEvents: videoUrl ? "auto" : "none", backgroundColor: downloadStatus == "success" ? themeSet.success[theme] : downloadStatus == "fail" ? themeSet.fail[theme] : themeSet.fail[theme] }}>
                 {downloadStatus === "fail" ? downloadInfo[lang] : downloadStatus === "requestFail" ? downloadInfo[lang] : downloadStatus === "success" ? localization.infoDescription.download[lang] : localization.infoDescription.notDownload[lang]}
               </a>
             )}
