@@ -1,11 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#[cfg(unix)]
+use std::os::unix::fs::PermissionsExt;
 
 use std::fs;
 use std::io::Cursor;
 use std::process::Stdio;
 use std::path::Path; // 用來處理路徑轉檔名
 use std::process::Command;
+#[cfg(target_os = "windows")]
 use std::os::windows::process::CommandExt;
 use tauri::{AppHandle, Emitter, Manager};
 use tauri::path::BaseDirectory;
@@ -14,10 +17,33 @@ use tokio::io::{BufReader, AsyncBufReadExt};
 use regex::Regex;
 
 // 定義常數
+#[cfg(target_os = "windows")]
 const FFMPEG_FILENAME: &str = "ffmpeg.exe";
+#[cfg(target_os = "windows")]
 const YT_DLP_FILENAME: &str = "yt-dlp.exe";
-const YT_DLP_API_URL: &str = "https://api.github.com/repos/yt-dlp/yt-dlp-nightly-builds/releases/latest";
+#[cfg(target_os = "windows")]
 const YT_DLP_DOWNLOAD_URL: &str = "https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/latest/download/yt-dlp.exe";
+
+#[cfg(target_os = "macos")]
+const FFMPEG_FILENAME: &str = "ffmpeg";
+#[cfg(target_os = "macos")]
+const YT_DLP_FILENAME: &str = "yt-dlp_macos";
+#[cfg(target_os = "macos")]
+const YT_DLP_DOWNLOAD_URL: &str = "https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/latest/download/yt-dlp_macos";
+
+#[cfg(target_os = "windows")]
+const YT_DLP_RESOURCE_PATH: &str = "binaries/yt-dlp-x86_64-pc-windows-msvc.exe";
+#[cfg(target_os = "windows")]
+const FFMPEG_RESOURCE_PATH: &str = "binaries/ffmpeg-x86_64-pc-windows-msvc.exe";
+
+#[cfg(target_os = "macos")]
+const YT_DLP_RESOURCE_PATH: &str = "binaries/yt-dlp_macos";
+#[cfg(target_os = "macos")]
+const FFMPEG_RESOURCE_PATH: &str = "binaries/ffmpeg";
+
+const YT_DLP_API_URL: &str = "https://api.github.com/repos/yt-dlp/yt-dlp-nightly-builds/releases/latest";
+
+#[cfg(target_os = "windows")]
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 // 定義事件 Payload
@@ -70,16 +96,30 @@ fn init_and_update_ytdlp(app: &AppHandle) -> Result<(), Box<dyn std::error::Erro
     // 初始化 ytdlp，如果檔案不存在，從 Resource 複製 (初始化)
     if !ytdlp_target.exists() {
         println!("正在初始化 yt-dlp...");
-        let res_path = app.path().resolve("binaries/yt-dlp-x86_64-pc-windows-msvc.exe", BaseDirectory::Resource)?;
+        let res_path = app.path().resolve(YT_DLP_RESOURCE_PATH, BaseDirectory::Resource)?;
         fs::copy(res_path, &ytdlp_target)?;
+
+        #[cfg(unix)]
+        {
+            let mut perms = fs::metadata(&ytdlp_target)?.permissions();
+            perms.set_mode(0o755); 
+            fs::set_permissions(&ytdlp_target, perms)?;
+        }
     }
     
     // --- 初始化 ffmpeg ---
     let ffmpeg_target = bin_dir.join(FFMPEG_FILENAME);
     if !ffmpeg_target.exists() {
         println!("正在初始化 ffmpeg...");
-        let res_path = app.path().resolve("binaries/ffmpeg-x86_64-pc-windows-msvc.exe", BaseDirectory::Resource)?;
+        let res_path = app.path().resolve(FFMPEG_RESOURCE_PATH, BaseDirectory::Resource)?;
         fs::copy(res_path, &ffmpeg_target)?;
+
+        #[cfg(unix)]
+        {
+            let mut perms = fs::metadata(&ffmpeg_target)?.permissions();
+            perms.set_mode(0o755); 
+            fs::set_permissions(&ffmpeg_target, perms)?;
+        }
     }
 
     // --- 版本偵測與自動更新邏輯 ---
@@ -87,11 +127,13 @@ fn init_and_update_ytdlp(app: &AppHandle) -> Result<(), Box<dyn std::error::Erro
 
     // 取得本機版本
     // 執行 yt-dlp.exe --version
-    let local_version = match Command::new(&ytdlp_target)
-    .arg("--version")
-    .creation_flags(CREATE_NO_WINDOW)
-    .output()
-    {
+    let mut cmd = Command::new(&ytdlp_target);
+    cmd.arg("--version");
+    
+    #[cfg(target_os = "windows")]
+    cmd.creation_flags(CREATE_NO_WINDOW);
+
+    let local_version = match cmd.output() {
         Ok(output) => String::from_utf8_lossy(&output.stdout).trim().to_string(),
         Err(_) => String::new(),
     };
@@ -122,6 +164,13 @@ fn init_and_update_ytdlp(app: &AppHandle) -> Result<(), Box<dyn std::error::Erro
                             let mut file = fs::File::create(&ytdlp_target)?;
                             let mut content = Cursor::new(bytes);
                             std::io::copy(&mut content, &mut file)?;
+                            
+                            #[cfg(unix)]
+                            {
+                                let mut perms = fs::metadata(&ytdlp_target)?.permissions();
+                                perms.set_mode(0o755); // 相當於 chmod +x
+                                fs::set_permissions(&ytdlp_target, perms)?;
+                            }
                             
                             println!("yt-dlp 更新成功！新版本: {}", remote_version);
                         } else {
@@ -207,7 +256,7 @@ async fn download_video(app_handle: AppHandle, id: String, url: String, mode: St
                 
                 // 設定檔案格式
                 args.push("-f");
-                args.push("bestvideo");
+                args.push("bestvideo[ext=mp4]/bestvideo");
                 args.push("--merge-output-format");
                 args.push("mp4");
             },
@@ -217,21 +266,23 @@ async fn download_video(app_handle: AppHandle, id: String, url: String, mode: St
                 args.push("%(title)s.%(ext)s");
 
                 // 設定檔案格式
+                args.push("-f");
+                args.push("bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best");
                 args.push("--merge-output-format");
                 args.push("mp4");
-                args.push("--postprocessor-args");
-                args.push("Merger+ffmpeg:-c:v copy -c:a aac");
             }
         }
 
-        let mut child = tokio::process::Command::new(yt_dlp_path_string)
-            .args(&args)
-            .env("PYTHONUNBUFFERED", "1")
-            .creation_flags(CREATE_NO_WINDOW)
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped()) 
-            .spawn()
-            .expect("failed to spawn yt-dlp");
+        let mut cmd = tokio::process::Command::new(yt_dlp_path_string);
+        cmd.args(&args)
+           .env("PYTHONUNBUFFERED", "1")
+           .stdout(Stdio::piped())
+           .stderr(Stdio::piped());
+
+        #[cfg(target_os = "windows")]
+        cmd.creation_flags(CREATE_NO_WINDOW);
+
+        let mut child = cmd.spawn().expect("failed to spawn yt-dlp");
 
         let progress_regex = Regex::new(r"(\d+\.?\d*)%").unwrap();
         let live_keyword_regex = Regex::new(r"is currently being live streamed|live event").unwrap();
