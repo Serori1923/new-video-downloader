@@ -41,10 +41,11 @@
       }
     },
     "createUpdaterArtifacts": true,
-    "externalBin": ["binaries/yt-dlp"],
     "resources": [
       "binaries/yt-dlp-x86_64-pc-windows-msvc.exe",
-      "binaries/ffmpeg-x86_64-pc-windows-msvc.exe"
+      "binaries/ffmpeg-x86_64-pc-windows-msvc.exe",
+      "binaries/yt-dlp_macos", 
+      "binaries/ffmpeg"
     ]
   },
   "plugins": {
